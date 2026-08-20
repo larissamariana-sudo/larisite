@@ -71,9 +71,9 @@ with tab1:
     col1, col2 = st.columns([1, 2])
     with col1:
         try:
-            st.image("larissa.jpg", use_container_width=True)
+            st.image("larissa.png", use_container_width=True)
         except:
-            st.markdown('<div class="placeholder-img">📷 Foto "larissa.jpg" não encontrada na raiz do repositório.</div>', unsafe_allow_html=True)
+            st.markdown('<div class="placeholder-img">📷 Foto "larissa.png" não encontrada na raiz do repositório.</div>', unsafe_allow_html=True)
         st.caption("Fisioterapeuta - PUC Goiás[cite: 1, 2]")
         
     with col2:
@@ -101,9 +101,9 @@ with tab2:
     st.write("Agende avaliações especializadas, mentorias clínicas ou consultorias na área de Fisioterapia.")
     
     try:
-        st.image("imagens/servicos.png", use_container_width=True)
+        st.image("imagens/terapiamanual.jpg", use_container_width=True)
     except:
-        st.markdown('<div class="placeholder-img">🖼️ Imagem "imagens/servicos.png" não encontrada na pasta "imagens".</div>', unsafe_allow_html=True)
+        st.markdown('<div class="placeholder-img">🖼️ Imagem "imagens/terapiamanual.jpg" não encontrada na pasta "imagens".</div>', unsafe_allow_html=True)
     
     with st.form("form_servico"):
         st.subheader("Formulário de Solicitação")
