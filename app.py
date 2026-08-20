@@ -69,7 +69,7 @@ with tab1:
     with col1:
         try:
             # Atualizado para buscar dentro da pasta imagens
-            st.image("imagens/larissa.PNG", use_container_width=True)
+            st.image("imagens/larissa.PNG", width=250)
         except:
             st.markdown('<div class="placeholder-img">📷 Foto "larissa.PNG" não encontrada na pasta imagens.</div>', unsafe_allow_html=True)
         st.caption("Fisioterapeuta - PUC Goiás")
