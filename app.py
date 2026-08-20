@@ -28,15 +28,12 @@ st.markdown("""
 # Função robusta em Python para carregar e tratar os dados da planilha do Google Sheets
 @st.cache_data(ttl=600)
 def carregar_dados_planilha():
-    # Link convertida para exportação direta em CSV legível pelo Pandas
     url_csv = "https://docs.google.com/spreadsheets/d/1A0ZHnATInlMHMjp44SEb8VlwyQvXS34gkLS2SrYiGUE/export?format=csv"
     try:
         df = pd.read_csv(url_csv)
-        # Padroniza os nomes das colunas para evitar erros de leitura por maiúsculas/minúsculas
         df.columns = df.columns.str.strip().str.title()
         return df
     except Exception as e:
-        # Retorna um DataFrame vazio estruturado caso ocorra algum erro na leitura da web
         return pd.DataFrame(columns=["Secao", "Titulo", "Descricao", "Link", "Isbn/Doi"])
 
 df_site = carregar_dados_planilha()
@@ -52,7 +49,7 @@ with col_centro:
         st.markdown('<div class="placeholder-img">🖼️ Imagem "imagens/capasite.png" não encontrada na pasta "imagens".</div>', unsafe_allow_html=True)
 
 st.markdown('<h1 class="main-header" style="text-align: center;">Prof. Dr(a). Larissa Mariana Veloso de Oliveira</h1>', unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size: 1.2rem; font-weight: bold; color: #555;'>Fisioterapeuta | Coordenadora do Curso de Fisioterapia — PUC Goiás[cite: 1, 2]</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1.2rem; font-weight: bold; color: #555;'>Fisioterapeuta | Coordenadora do Curso de Fisioterapia — PUC Goiás</p>", unsafe_allow_html=True)
 st.markdown("---")
 
 # Abas de Navegação
@@ -71,24 +68,24 @@ with tab1:
     col1, col2 = st.columns([1, 2])
     with col1:
         try:
-            st.image("larissa.PNG", use_container_width=True)
+            st.image("larissa.jpg", use_container_width=True)
         except:
-            st.markdown('<div class="placeholder-img">📷 Foto "larissa.PNG" não encontrada na raiz do repositório.</div>', unsafe_allow_html=True)
-        st.caption("Fisioterapeuta - PUC Goiás[cite: 1, 2]")
+            st.markdown('<div class="placeholder-img">📷 Foto "larissa.jpg" não encontrada na raiz do repositório.</div>', unsafe_allow_html=True)
+        st.caption("Fisioterapeuta - PUC Goiás")
         
     with col2:
         st.header("Sobre Mim")
         st.write("""
-        Graduada pela UNESP, Mestre pela Universitat Internacional de Catalunya e Doutoranda pela Universidad de Palermo[cite: 2]. 
-        Docente da PUC Goiás desde 2005 e Coordenadora do Curso de Fisioterapia desde 2011[cite: 2]. Atuação destacada em reabilitação, 
-        saúde pública, preceptoria e gestão acadêmica, com premiações pelo Ministério da Saúde e Assembleia Legislativa de Goiás (ALEGO)[cite: 2].
+        Graduada pela UNESP, Mestre pela Universitat Internacional de Catalunya e Doutoranda pela Universidad de Palermo. 
+        Docente da PUC Goiás desde 2005 e Coordenadora do Curso de Fisioterapia desde 2011. Atuação destacada em reabilitação, 
+        saúde pública, preceptoria e gestão acadêmica, com premiações pelo Ministério da Saúde e Assembleia Legislativa de Goiás (ALEGO).
         """)
         
         # Pilares institucionais
         c1, c2, c3 = st.columns(3)
-        c1.metric("Docência", "PUC Goiás[cite: 1, 2]")
-        c2.metric("Coordenação", "Fisioterapia[cite: 1, 2]")
-        c3.metric("Atuação", "Clínica & Pesquisa[cite: 2]")
+        c1.metric("Docência", "PUC Goiás")
+        c2.metric("Coordenação", "Fisioterapia")
+        c3.metric("Atuação", "Clínica & Pesquisa")
         
         st.markdown("---")
         st.link_button("📄 Ver Currículo Lattes Completo", "http://lattes.cnpq.br/1002411477807507")
@@ -101,9 +98,9 @@ with tab2:
     st.write("Agende avaliações especializadas, mentorias clínicas ou consultorias na área de Fisioterapia.")
     
     try:
-        st.image("imagens/terapiamanual.jpg", use_container_width=True)
+        st.image("imagens/servicos.png", use_container_width=True)
     except:
-        st.markdown('<div class="placeholder-img">🖼️ Imagem "imagens/terapiamanual.jpg" não encontrada na pasta "imagens".</div>', unsafe_allow_html=True)
+        st.markdown('<div class="placeholder-img">🖼️ Imagem "imagens/servicos.png" não encontrada na pasta "imagens".</div>', unsafe_allow_html=True)
     
     with st.form("form_servico"):
         st.subheader("Formulário de Solicitação")
@@ -159,7 +156,7 @@ with tab4:
             cert = base_certificados[codigo_input]
             st.success("✅ **Certificado Válido e Autêntico!**")
             st.write(f"- **Curso/Evento:** {cert['curso']}")
-            st.write(f"- **Instituição:** PUC Goiás[cite: 1, 2]")
+            st.write(f"- **Instituição:** PUC Goiás")
         elif codigo_input == "":
             st.warning("⚠️ Insira um código no campo acima.")
         else:
@@ -183,7 +180,6 @@ with tab5:
                 st.subheader(row.get('Titulo', ''))
                 st.write(row.get('Descricao', ''))
                 
-                # Leitura dinâmica da coluna ISBN/DOI tratada pelo Python
                 coluna_isbn = next((col for col in df_site.columns if 'isbn' in col.lower() or 'doi' in col.lower()), None)
                 if coluna_isbn and pd.notna(row.get(coluna_isbn)) and str(row.get(coluna_isbn)).strip() != "":
                     st.caption(f"📌 **ISBN/DOI:** {row.get(coluna_isbn)}")
@@ -197,6 +193,6 @@ with tab5:
 # Rodapé padrão
 st.markdown("---")
 st.markdown(
-    "<p style='text-align: center; color: gray;'>© 2026 Prof. Dr(a). Larissa Mariana Veloso de Oliveira • Fisioterapia PUC Goiás[cite: 1, 2] • Todos os direitos reservados.</p>", 
+    "<p style='text-align: center; color: gray;'>© 2026 Prof. Dr(a). Larissa Mariana Veloso de Oliveira • Fisioterapia PUC Goiás • Todos os direitos reservados.</p>", 
     unsafe_allow_html=True
 )
