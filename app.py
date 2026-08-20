@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 # Configuração da Página
 st.set_page_config(
@@ -7,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilização visual para destacar os espaços das imagens
+# Estilização visual para os espaços de imagem
 st.markdown("""
     <style>
     .placeholder-img { 
@@ -24,16 +25,27 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Função para carregar os dados da sua planilha do Google Sheets
+@st.cache_data(ttl=600) # Atualiza os dados a cada 10 minutos
+def carregar_dados_planilha():
+    # Substitua o link abaixo pelo link CSV público da sua planilha do Google Sheets
+    # Dica: No Google Planilhas, pegue o link de compartilhamento e ajuste o final para /export?format=csv
+    url_csv = "COLE_O_LINK_CSV_DA_ SUA_PLANILHA_AQUI"
+    try:
+        df = pd.read_csv(url_csv)
+        return df
+    except:
+        return pd.DataFrame(columns=["Secao", "Titulo", "Descricao", "Link"])
+
+df_site = carregar_dados_planilha()
+
 # ==========================================
 # 1. FOTO DE CAPA DO SITE
 # ==========================================
-# Para substituir pela imagem real, troque o bloco abaixo por: 
-# st.image("imagens/capa.jpg", use_container_width=True)
 st.markdown('<div class="placeholder-img">🖼️ Coloque sua foto de capa aqui (Sugestão: 1200x300px)</div>', unsafe_allow_html=True)
 
-# Título Principal
 st.markdown('<h1 class="main-header">Prof. Dr(a). [Seu Nome Completo]</h1>', unsafe_allow_html=True)
-st.markdown("### Fisioterapeuta | Docente e Pesquisador(a) na PUC Goiás")
+st.markdown("### Fisioterapeuta | Coordenação do Curso de Fisioterapia — PUC Goiás[cite: 1]")
 st.markdown("---")
 
 # Abas de Navegação
@@ -46,22 +58,42 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 ])
 
 # ==========================================
-# ABA 1: SOBRE & LATTES
+# ABA 1: SOBRE & LATTES (Puxando dados da planilha se houver)
 # ==========================================
 with tab1:
     col1, col2 = st.columns([1, 2])
     with col1:
-        # Para substituir a foto de perfil: st.image("imagens/perfil.jpg", use_container_width=True)
-        st.markdown('<div class="placeholder-img" style="padding: 60px 10px;">📷 Coloque sua foto de perfil aqui</div>', unsafe_allow_html=True)
+        st.markdown('<div class="placeholder-img" style="padding: 60px 10px;">📷 Foto de Perfil</div>', unsafe_allow_html=True)
+        st.caption("Fisioterapeuta - PUC Goiás[cite: 1]")
+        
     with col2:
         st.header("Sobre Mim")
-        st.write("""
-        Atuação dedicada à reabilitação funcional, pesquisa científica e ensino superior na **Pontifícia Universidade Católica de Goiás (PUC Goiás)**. 
-        Comprometido(a) com a formação acadêmica de excelência, desenvolvimento motor e práticas clínicas baseadas em evidências.
-        """)
-        st.markdown("### Currículo Acadêmico")
-        st.write("Acesse todas as minhas publicações, orientações e histórico acadêmico completo na plataforma oficial.")
-        st.link_button("🔗 Acessar Currículo Lattes", "https://lattes.cnpq.br/SEU_ID_LATTES")
+        
+        # Filtra dados da seção 'sobre' na planilha, se preenchidos
+        dados_sobre = df_site[df_site['Secao'] == 'sobre'] if not df_site.empty else pd.DataFrame()
+        
+        if not dados_sobre.empty:
+            for _, row in dados_sobre.iterrows():
+                st.subheader(row['Titulo'])
+                st.write(row['Descricao'])
+                if pd.notna(row['Link']) and row['Link'] != "":
+                    st.link_button(f"🔗 Acessar Link Oficial", row['Link'])
+        else:
+            # Texto padrão caso a planilha ainda esteja vazia
+            st.write("""
+            Atuação dedicada à reabilitação funcional, pesquisa científica e gestão acadêmica 
+            na Pontifícia Universidade Católica de Goiás (PUC Goiás). Foco na coordenação pedagógica, 
+            desenvolvimento motor e práticas baseadas em evidências[cite: 1].
+            """)
+        
+        # Pilares institucionais fixos ou dinâmicos baseados no seu perfil
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Docência", "PUC Goiás[cite: 1]")
+        c2.metric("Coordenação", "Fisioterapia[cite: 1]")
+        c3.metric("Atuação", "Clínica[cite: 1]")
+        
+        st.markdown("---")
+        st.link_button("📄 Ver Currículo Lattes Completo", "https://lattes.cnpq.br/SEU_ID_LATTES")
 
 # ==========================================
 # ABA 2: SERVIÇOS
@@ -69,8 +101,6 @@ with tab1:
 with tab2:
     st.header("Contratação de Serviços")
     st.write("Agende avaliações especializadas, mentorias clínicas ou consultorias na área de Fisioterapia.")
-    
-    # Para substituir a imagem da aba: st.image("imagens/servicos.jpg", use_container_width=True)
     st.markdown('<div class="placeholder-img">🖼️ Coloque a imagem ilustrativa dos serviços aqui</div>', unsafe_allow_html=True)
     
     with st.form("form_servico"):
@@ -78,14 +108,13 @@ with tab2:
         nome_servico = st.text_input("Seu Nome Completo")
         email_servico = st.text_input("Seu E-mail")
         tel_servico = st.text_input("Telefone / WhatsApp")
-        tipo_atendimento = st.selectbox("Selecione o Serviço", ["Fisioterapia Especializada", "Consultoria Científica", "Mentoria para Acadêmicos", "Outros"])
-        mensagem_servico = st.text_area("Descreva sua necessidade ou objetivo")
+        tipo_atendimento = st.selectbox("Selecione o Serviço", ["Fisioterapia Especializada", "Consultoria Científica", "Mentoria Acadêmica", "Outros"])
+        mensagem_servico = st.text_area("Descreva sua necessidade")
         
-        enviar_servico = st.form_submit_button("Enviar Solicitação de Contato")
-        if enviar_servico:
+        if st.form_submit_button("Enviar Solicitação de Contato"):
             if nome_servico and email_servico:
                 st.success("Solicitação enviada com sucesso! Entraremos em contato em breve.")
-            $else$:
+            else:
                 st.warning("Por favor, preencha pelo menos o seu nome e e-mail.")
 
 # ==========================================
@@ -94,25 +123,19 @@ with tab2:
 with tab3:
     st.header("Cursos, Capacitações e Palestras")
     st.write("Confira a agenda de eventos presenciais na PUC Goiás e online.")
-    
-    # Para substituir a imagem de eventos: st.image("imagens/cursos.jpg", use_container_width=True)
     st.markdown('<div class="placeholder-img">🖼️ Coloque a imagem do próximo evento ou banner aqui</div>', unsafe_allow_html=True)
     
-    st.markdown("### 📌 Próximo Evento em Destaque")
-    st.info("**Tema:** Atualizações Clínicas em Fisioterapia e Reabilitação\n\n**Data:** A definir | **Local:** PUC Goiás / Online")
-    
-    with st.form("form_inscricao_evento"):
-        st.subheader("Inscrição para o Evento")
-        nome_curso = st.text_input("Nome Completo do Participante")
-        email_curso = st.text_input("E-mail para envio de informações")
-        crf_ou_vinculo = st.text_input("Nº de Registro profissional (CREFITO) ou Vínculo Acadêmico")
-        
-        inscrever = st.form_submit_button("Garantir Minha Inscrição")
-        if inscrever:
-            if nome_curso and email_curso:
-                st.success(f"Inscrição realizada com sucesso, {nome_curso}! Um e-mail de confirmação será enviado.")
-            else:
-                st.warning("Preencha os campos obrigatórios.")
+    # Exibindo cursos dinâmicos da planilha se houver
+    dados_cursos = df_site[df_site['Secao'] == 'cursos'] if not df_site.empty else pd.DataFrame()
+    if not dados_cursos.empty:
+        for _, row in dados_cursos.iterrows():
+            with st.container(border=True):
+                st.subheader(row['Titulo'])
+                st.write(row['Descricao'])
+                if pd.notna(row['Link']):
+                    st.link_button("Inscrever-se no Evento", row['Link'])
+    else:
+        st.info("Nenhum curso cadastrado no momento. Atualize sua planilha para adicionar eventos.")
 
 # ==========================================
 # ABA 4: VERIFICAÇÃO DE CERTIFICADOS
@@ -120,30 +143,23 @@ with tab3:
 with tab4:
     st.header("Verificação de Autenticidade de Certificados")
     st.write("Digite o código alfanumérico impresso no seu certificado para comprovar sua validade na PUC Goiás.")
-    
-    # Para substituir a imagem da aba: st.image("imagens/certificados.jpg", use_container_width=True)
     st.markdown('<div class="placeholder-img">🖼️ Coloque uma imagem ilustrativa de validação/certificados aqui</div>', unsafe_allow_html=True)
     
     codigo_input = st.text_input("Código do Certificado (Ex: PUC-FISIO-2026-001)").strip()
     
     if st.button("Verificar Autenticidade"):
-        # Base de dados simulada de códigos (pode ser ligada ao Google Sheets futuramente)
         base_certificados = {
-            "PUC-FISIO-001": {"valido": True, "curso": "Atualidades em Fisioterapia", "data": "Janeiro de 2026", "carga": "20h"},
-            "PUC-FISIO-002": {"valido": True, "curso": "Biomecânica Aplicada", "data": "Fevereiro de 2026", "carga": "10h"}
+            "PUC-FISIO-001": {"valido": True, "curso": "Atualidades em Fisioterapia", "data": "2026", "carga": "20h"}
         }
-        
         if codigo_input in base_certificados:
             cert = base_certificados[codigo_input]
             st.success("✅ **Certificado Válido e Autêntico!**")
             st.write(f"- **Curso/Evento:** {cert['curso']}")
-            st.write(f"- **Carga Horária:** {cert['carga']}")
-            st.write(f"- **Data de Emissão:** {cert['data']}")
-            st.write("- **Instituição:** PUC Goiás")
+            st.write(f"- **Instituição:** PUC Goiás")
         elif codigo_input == "":
             st.warning("⚠️ Insira um código no campo acima.")
         else:
-            st.error("❌ **Certificado não encontrado.** Verifique se digitou o código corretamente.")
+            st.error("❌ **Certificado não encontrado.**")
 
 # ==========================================
 # ABA 5: E-BOOKS E PUBLICAÇÕES
@@ -152,25 +168,24 @@ with tab5:
     st.header("E-books e Materiais Acadêmicos")
     st.write("Materiais didáticos, guias práticos e e-books publicados para suporte acadêmico e profissional.")
     
-    col_eb1, col_eb2 = st.columns(2)
+    dados_ebooks = df_site[df_site['Secao'] == 'ebooks'] if not df_site.empty else pd.DataFrame()
     
-    with col_eb1:
-        # Para substituir a capa do ebook: st.image("imagens/ebook1.jpg", width=200)
-        st.markdown('<div class="placeholder-img" style="padding: 30px;">📖 Capa do E-book 1</div>', unsafe_allow_html=True)
-        st.subheader("Guia Prático de Avaliação Motora")
-        st.write("Abordagem detalhada sobre exames físicos e testes funcionais.")
-        st.link_button("📥 Baixar / Acessar E-book", "https://link-do-seu-ebook-aqui.com")
-        
-    with col_eb2:
-        # Para substituir a capa do ebook: st.image("imagens/ebook2.jpg", width=200)
-        st.markdown('<div class="placeholder-img" style="padding: 30px;">📖 Capa do E-book 2</div>', unsafe_allow_html=True)
-        st.subheader("Reabilitação Baseada em Evidências")
-        st.write("Artigos compilados e diretrizes clínicas para o cotidiano do fisioterapeuta.")
-        st.link_button("📥 Baixar / Acessar E-book", "https://link-do-seu-ebook-aqui.com")
+    if not dados_ebooks.empty:
+        cols = st.columns(2)
+        idx = 0
+        for _, row in dados_ebooks.iterrows():
+            with cols[idx % 2]:
+                st.markdown('<div class="placeholder-img" style="padding: 30px;">📖 Capa do E-book</div>', unsafe_allow_html=True)
+                st.subheader(row['Titulo'])
+                st.write(row['Descricao'])
+                if pd.notna(row['Link']):
+                    st.link_button("📥 Baixar / Acessar E-book", row['Link'])
+            idx += 1
+    else:
+        st.write("Nenhum e-book cadastrado na planilha no momento.")
 
-# Rodapé padrão do site
 st.markdown("---")
 st.markdown(
-    "<p style='text-align: center; color: gray;'>© 2026 Prof. Dr(a). [Seu Nome] • Docente da PUC Goiás • Todos os direitos reservados.</p>", 
+    "<p style='text-align: center; color: gray;'>© 2026 Prof. Dr(a). [Seu Nome] • Coordenação de Fisioterapia PUC Goiás[cite: 1] • Todos os direitos reservados.</p>", 
     unsafe_allow_html=True
 )
