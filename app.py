@@ -42,8 +42,7 @@ df_site = carregar_dados_planilha()
 # 1. FOTO DE CAPA DO SITE
 # ==========================================
 # Para substituir: st.image("imagens/capa.jpg", use_container_width=True)
-st.markdown('<arlivre.png>', unsafe_allow_html=True)
-
+st.image("arlivre.png", use_container_width=True)
 st.markdown('<h1 class="main-header">Prof. Dr(a). Larissa Mariana Veloso de Oliveira</h1>', unsafe_allow_html=True)
 st.markdown("### Fisioterapeuta | Coordenadora do Curso de Fisioterapia — PUC Goiás[cite: 1, 2]")
 st.markdown("---")
