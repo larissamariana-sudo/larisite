@@ -45,9 +45,9 @@ col_esq, col_centro, col_dir = st.columns([1, 4, 1])
 with col_centro:
     try:
         # Exibe a imagem de capa 'arlibre.png' localizada na pasta 'imagens'
-        st.image("imagens/arlibre.png", use_container_width=True)
+        st.image("imagens/capasite.png", use_container_width=True)
     except:
-        st.markdown('<div class="placeholder-img">🖼️ Imagem "imagens/arlibre.png" não encontrada. Verifique a pasta!</div>', unsafe_allow_html=True)
+        st.markdown('<div class="placeholder-img">🖼️ Imagem "imagens/capasite.png" não encontrada. Verifique a pasta!</div>', unsafe_allow_html=True)
 
 st.markdown('<h1 class="main-header" style="text-align: center;">Prof. Dr(a). Larissa Mariana Veloso de Oliveira</h1>', unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size: 1.2rem; font-weight: bold; color: #555;'>Fisioterapeuta | Coordenadora do Curso de Fisioterapia — PUC Goiás</p>", unsafe_allow_html=True)
