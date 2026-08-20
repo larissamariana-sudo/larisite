@@ -36,7 +36,7 @@ try:
     st.image("arlivre.png", use_container_width=True)
 except:
     try:
-        st.image("imagens/capa.png", use_container_width=True)
+        st.image("arlivre.png", use_container_width=True)
     except:
         st.info("💡 Dica: Suba uma imagem chamada 'capa.jpg' ou 'capa.png' na pasta 'imagens' do seu GitHub para exibir aqui.")
 
