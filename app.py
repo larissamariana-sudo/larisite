@@ -31,7 +31,7 @@ df_site = carregar_dados_planilha()
 # ==========================================
 # 1. FOTO DE CAPA DO SITE
 # ==========================================
-# Certifique-se de ter um arquivo 'capa.jpg' ou 'capa.png' dentro da pasta 'imagens' no GitHub
+# Certifique-se de ter um arquivo 'arlivre.jpg' ou 'arlivre.png' dentro da pasta 'imagens' no GitHub
 try:
     st.image("arlivre.png", use_container_width=True)
 except:
