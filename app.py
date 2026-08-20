@@ -68,9 +68,10 @@ with tab1:
     col1, col2 = st.columns([1, 2])
     with col1:
         try:
-            st.image("larissa.PNG", use_container_width=True)
+            # Atualizado para buscar dentro da pasta imagens
+            st.image("imagens/larissa.PNG", use_container_width=True)
         except:
-            st.markdown('<div class="placeholder-img">📷 Foto "larissa.PNG" não encontrada na raiz do repositório.</div>', unsafe_allow_html=True)
+            st.markdown('<div class="placeholder-img">📷 Foto "larissa.PNG" não encontrada na pasta imagens.</div>', unsafe_allow_html=True)
         st.caption("Fisioterapeuta - PUC Goiás")
         
     with col2:
