@@ -3,24 +3,14 @@ import pandas as pd
 
 # Configuração da Página
 st.set_page_config(
-    page_title="Prof. Dr(a). Larissa Mariana | Fisioterapia & Docência no Ensino Superior",
+    page_title="Prof. Dr(a). Larissa Mariana | Fisioterapia & Docência",
     page_icon="🩺",
     layout="wide"
 )
 
-# Estilização visual para os espaços de imagem e layout
+# Estilização visual para layout profissional
 st.markdown("""
     <style>
-    .placeholder-img { 
-        background-color: #f0f2f6; 
-        color: #555; 
-        padding: 40px; 
-        text-align: center; 
-        border: 2px dashed #b0c4de; 
-        border-radius: 8px;
-        margin-bottom: 15px; 
-        font-weight: 500;
-    }
     .main-header { font-size: 2.5rem; color: #004a80; }
     </style>
 """, unsafe_allow_html=True)
@@ -41,8 +31,15 @@ df_site = carregar_dados_planilha()
 # ==========================================
 # 1. FOTO DE CAPA DO SITE
 # ==========================================
-# Para substituir: st.image("imagens/capa.jpg", use_container_width=True)
-st.image("arlivre.png", use_container_width=True)
+# Certifique-se de ter um arquivo 'capa.jpg' ou 'capa.png' dentro da pasta 'imagens' no GitHub
+try:
+    st.image("imagens/capa.jpg", use_container_width=True)
+except:
+    try:
+        st.image("imagens/capa.png", use_container_width=True)
+    except:
+        st.info("💡 Dica: Suba uma imagem chamada 'capa.jpg' ou 'capa.png' na pasta 'imagens' do seu GitHub para exibir aqui.")
+
 st.markdown('<h1 class="main-header">Prof. Dr(a). Larissa Mariana Veloso de Oliveira</h1>', unsafe_allow_html=True)
 st.markdown("### Fisioterapeuta | Coordenadora do Curso de Fisioterapia — PUC Goiás[cite: 1, 2]")
 st.markdown("---")
@@ -62,8 +59,14 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 with tab1:
     col1, col2 = st.columns([1, 2])
     with col1:
-        # Para substituir: st.image("imagens/perfil.jpg", use_container_width=True)
-        st.markdown('<div class="placeholder-img" style="padding: 60px 10px;">📷 Foto de Perfil</div>', unsafe_allow_html=True)
+        # Certifique-se de ter um arquivo 'perfil.jpg' ou 'perfil.png' na pasta 'imagens'
+        try:
+            st.image("imagens/perfil.jpg", use_container_width=True)
+        except:
+            try:
+                st.image("imagens/perfil.png", use_container_width=True)
+            except:
+                st.warning("📷 Coloque uma foto 'perfil.jpg' na pasta 'imagens'.")
         st.caption("Fisioterapeuta - PUC Goiás[cite: 1, 2]")
         
     with col2:
@@ -90,8 +93,10 @@ with tab2:
     st.header("Contratação de Serviços")
     st.write("Agende avaliações especializadas, mentorias clínicas ou consultorias na área de Fisioterapia.")
     
-    # Para substituir: st.image("imagens/servicos.jpg", use_container_width=True)
-    st.markdown('<div class="placeholder-img">🖼️ Coloque a imagem ilustrativa dos serviços aqui</div>', unsafe_allow_html=True)
+    try:
+        st.image("imagens/servicos.jpg", use_container_width=True)
+    except:
+        pass
     
     with st.form("form_servico"):
         st.subheader("Formulário de Solicitação")
@@ -114,8 +119,10 @@ with tab3:
     st.header("Projetos, Cursos e Extensão")
     st.write("Acompanhe as iniciativas acadêmicas, tutorias do PET-Saúde e capacitações.")
     
-    # Para substituir: st.image("imagens/cursos.jpg", use_container_width=True)
-    st.markdown('<div class="placeholder-img">🖼️ Coloque a imagem de eventos ou banner aqui</div>', unsafe_allow_html=True)
+    try:
+        st.image("imagens/cursos.jpg", use_container_width=True)
+    except:
+        pass
     
     # Puxando dados da planilha categorizados como 'cursos' ou 'pesquisa'
     dados_pesq = df_site[df_site['Secao'].isin(['cursos', 'pesquisa'])] if not df_site.empty else pd.DataFrame()
@@ -136,9 +143,6 @@ with tab3:
 with tab4:
     st.header("Verificação de Autenticidade de Certificados")
     st.write("Digite o código alfanumérico impresso no seu certificado para comprovar sua validade na PUC Goiás.")
-    
-    # Para substituir: st.image("imagens/certificados.jpg", use_container_width=True)
-    st.markdown('<div class="placeholder-img">🖼️ Coloque uma imagem ilustrativa de validação/certificados aqui</div>', unsafe_allow_html=True)
     
     codigo_input = st.text_input("Código do Certificado (Ex: PUC-FISIO-2026-001)").strip()
     
