@@ -3,7 +3,7 @@ import pandas as pd
 
 # Configuração da Página
 st.set_page_config(
-    page_title="Prof. Dr(a). Larissa Mariana | Fisioterapia & Docência",
+    page_title="Prof. Dr(a). Larissa Mariana | Fisioterapia & Docência no Ensino Superior",
     page_icon="🩺",
     layout="wide"
 )
@@ -29,12 +29,12 @@ st.markdown("""
 @st.cache_data(ttl=600)
 def carregar_dados_planilha():
     # Substitua o link abaixo pelo link CSV público da sua planilha do Google Sheets (/export?format=csv)
-    url_csv = "COLE_O_LINK_CSV_DA_SUA_PLANILHA_AQUI"
+    url_csv = "https://docs.google.com/spreadsheets/d/1A0ZHnATInlMHMjp44SEb8VlwyQvXS34gkLS2SrYiGUE/edit?usp=sharing"
     try:
         df = pd.read_csv(url_csv)
         return df
     except:
-        return pd.DataFrame(columns=["Secao", "Titulo", "Descricao", "Link"])
+        return pd.DataFrame(columns=["Secao", "Titulo", "Descricao", "Link", "ISBN/DOI"])
 
 df_site = carregar_dados_planilha()
 
@@ -45,9 +45,9 @@ col_esq, col_centro, col_dir = st.columns([1, 4, 1])
 with col_centro:
     try:
         # Exibe a imagem de capa 'arlibre.png' localizada na pasta 'imagens'
-        st.image("imagens/arlibre.png", use_container_width=True)
+        st.image("imagens/capa.jpg", use_container_width=True)
     except:
-        st.markdown('<div class="placeholder-img">🖼️ Imagem "imagens/arlibre.png" não encontrada. Verifique a pasta!</div>', unsafe_allow_html=True)
+        st.markdown('<div class="placeholder-img">🖼️ Imagem "imagens/capa.jpg" não encontrada. Verifique a pasta!</div>', unsafe_allow_html=True)
 
 st.markdown('<h1 class="main-header" style="text-align: center;">Prof. Dr(a). Larissa Mariana Veloso de Oliveira</h1>', unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size: 1.2rem; font-weight: bold; color: #555;'>Fisioterapeuta | Coordenadora do Curso de Fisioterapia — PUC Goiás</p>", unsafe_allow_html=True)
@@ -69,7 +69,7 @@ with tab1:
     col1, col2 = st.columns([1, 2])
     with col1:
         # Para substituir por sua foto de perfil real: st.image("larissa.jpg", use_container_width=True)
-        st.markdown('<div class="placeholder-img" style="padding: 60px 10px;">📷 Foto de Perfil</div>', unsafe_allow_html=True)
+        st.image("larissa.jpg", use_container_width=True)
         st.caption("Fisioterapeuta - PUC Goiás")
         
     with col2:
@@ -97,7 +97,7 @@ with tab2:
     st.write("Agende avaliações especializadas, mentorias clínicas ou consultorias na área de Fisioterapia.")
     
     # Para substituir: st.image("imagens/servicos.jpg", use_container_width=True)
-    st.markdown('<div class="placeholder-img">🖼️ Coloque a imagem ilustrativa dos serviços aqui</div>', unsafe_allow_html=True)
+    st.image("imagens/servicos.png", use_container_width=True)
     
     with st.form("form_servico"):
         st.subheader("Formulário de Solicitação")
