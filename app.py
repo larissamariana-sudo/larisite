@@ -3,7 +3,7 @@ import pandas as pd
 
 # Configuração da Página
 st.set_page_config(
-    page_title="Prof. Dr(a). Larissa Mariana | Fisioterapia & Docência",
+    page_title="Prof. Dr(a). Larissa Mariana Veloso de Oliveira | Fisioterapia & Docência no Ensino Superior",
     page_icon="🩺",
     layout="wide"
 )
@@ -41,7 +41,7 @@ df_site = carregar_dados_planilha()
 # ==========================================
 # 1. FOTO DE CAPA DO SITE
 # ==========================================
-# Para substituir: st.image("imagens/capa.jpg", use_container_width=True)
+# Para substituir: st.image("imagens/arlivre.png", use_container_width=True)
 st.markdown('<div class="placeholder-img">🖼️ Coloque sua foto de capa aqui (Sugestão: 1200x300px)</div>', unsafe_allow_html=True)
 
 st.markdown('<h1 class="main-header">Prof. Dr(a). Larissa Mariana Veloso de Oliveira</h1>', unsafe_allow_html=True)
