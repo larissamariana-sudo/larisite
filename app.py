@@ -13,7 +13,7 @@ st.markdown('''
 
 # 1. Capa
 # Para substituir a foto:
-st.image("arlivre.png", caption="Minha Foto", use_container_width=True)
+st.image("eu.jpg", caption="Minha Foto", use_container_width=True)
 
 st.title("Prof. Dr(a). [Seu Nome]")
 st.subheader("Fisioterapeuta | Docente da PUC Goiás")
