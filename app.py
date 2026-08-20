@@ -68,7 +68,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 with tab1:
     col1, col2 = st.columns([1, 2])
     with col1:
-        # Para substituir por sua foto de perfil real: st.image("imagens/perfil.jpg", use_container_width=True)
+        # Para substituir por sua foto de perfil real: st.image("larissa.jpg", use_container_width=True)
         st.markdown('<div class="placeholder-img" style="padding: 60px 10px;">📷 Foto de Perfil</div>', unsafe_allow_html=True)
         st.caption("Fisioterapeuta - PUC Goiás")
         
