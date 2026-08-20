@@ -33,7 +33,7 @@ df_site = carregar_dados_planilha()
 # ==========================================
 # Certifique-se de ter um arquivo 'capa.jpg' ou 'capa.png' dentro da pasta 'imagens' no GitHub
 try:
-    st.image("imagens/capa.jpg", use_container_width=True)
+    st.image("arlivre.png", use_container_width=True)
 except:
     try:
         st.image("imagens/capa.png", use_container_width=True)
