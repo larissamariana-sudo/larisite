@@ -12,7 +12,8 @@ st.markdown('''
 ''', unsafe_allow_html=True)
 
 # 1. Capa
-st.markdown('<div class="placeholder-img">Coloque sua foto de capa aqui (1200x300px)</div>', unsafe_allow_html=True)
+# Para substituir a foto:
+st.image("arlivre.png", caption="Minha Foto", use_container_width=True)
 
 st.title("Prof. Dr(a). [Seu Nome]")
 st.subheader("Fisioterapeuta | Docente da PUC Goiás")
