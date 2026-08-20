@@ -39,15 +39,18 @@ def carregar_dados_planilha():
 df_site = carregar_dados_planilha()
 
 # ==========================================
-# 1. FOTO DE CAPA DO SITE (arlibre.png)
+# 1. FOTO DE CAPA DO SITE (Mais estreita e centralizada)
 # ==========================================
-try:
-    st.image("imagens/arlibre.png", use_container_width=True)
-except:
-    st.markdown('<div class="placeholder-img">🖼️ Imagem de capa "arlibre.png" não encontrada na pasta "imagens".</div>', unsafe_allow_html=True)
+col_esq, col_centro, col_dir = st.columns([1, 4, 1])
+with col_centro:
+    try:
+        # Exibe a imagem de capa 'arlibre.png' localizada na pasta 'imagens'
+        st.image("imagens/arlibre.png", use_container_width=True)
+    except:
+        st.markdown('<div class="placeholder-img">🖼️ Imagem "imagens/arlibre.png" não encontrada. Verifique a pasta!</div>', unsafe_allow_html=True)
 
-st.markdown('<h1 class="main-header">Prof. Dr(a). Larissa Mariana Veloso de Oliveira</h1>', unsafe_allow_html=True)
-st.markdown("### Fisioterapeuta | Coordenadora do Curso de Fisioterapia — PUC Goiás[cite: 1, 2]")
+st.markdown('<h1 class="main-header" style="text-align: center;">Prof. Dr(a). Larissa Mariana Veloso de Oliveira</h1>', unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1.2rem; font-weight: bold; color: #555;'>Fisioterapeuta | Coordenadora do Curso de Fisioterapia — PUC Goiás</p>", unsafe_allow_html=True)
 st.markdown("---")
 
 # Abas de Navegação
@@ -65,23 +68,23 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 with tab1:
     col1, col2 = st.columns([1, 2])
     with col1:
-        # Para substituir a foto de perfil: st.image("imagens/perfil.jpg", use_container_width=True)
+        # Para substituir por sua foto de perfil real: st.image("imagens/perfil.jpg", use_container_width=True)
         st.markdown('<div class="placeholder-img" style="padding: 60px 10px;">📷 Foto de Perfil</div>', unsafe_allow_html=True)
-        st.caption("Fisioterapeuta - PUC Goiás[cite: 1, 2]")
+        st.caption("Fisioterapeuta - PUC Goiás")
         
     with col2:
         st.header("Sobre Mim")
         st.write("""
-        Graduada pela UNESP, Mestre pela Universitat Internacional de Catalunya e Doutoranda pela Universidad de Palermo[cite: 2]. 
-        Docente da PUC Goiás desde 2005 e Coordenadora do Curso de Fisioterapia desde 2011[cite: 2]. Atuação destacada em reabilitação, 
-        saúde pública, preceptoria e gestão acadêmica, com premiações pelo Ministério da Saúde e Assembleia Legislativa de Goiás (ALEGO)[cite: 2].
+        Graduada pela UNESP, Mestre pela Universitat Internacional de Catalunya e Doutoranda pela Universidad de Palermo. 
+        Docente da PUC Goiás desde 2005 e Coordenadora do Curso de Fisioterapia desde 2011. Atuação destacada em reabilitação, 
+        saúde pública, preceptoria e gestão acadêmica, com premiações pelo Ministério da Saúde e Assembleia Legislativa de Goiás (ALEGO).
         """)
         
         # Pilares institucionais
         c1, c2, c3 = st.columns(3)
-        c1.metric("Docência", "PUC Goiás[cite: 1, 2]")
-        c2.metric("Coordenação", "Fisioterapia[cite: 1, 2]")
-        c3.metric("Atuação", "Clínica & Pesquisa[cite: 2]")
+        c1.metric("Docência", "PUC Goiás")
+        c2.metric("Coordenação", "Fisioterapia")
+        c3.metric("Atuação", "Clínica & Pesquisa")
         
         st.markdown("---")
         st.link_button("📄 Ver Currículo Lattes Completo", "http://lattes.cnpq.br/1002411477807507")
@@ -120,6 +123,7 @@ with tab3:
     # Para substituir: st.image("imagens/cursos.jpg", use_container_width=True)
     st.markdown('<div class="placeholder-img">🖼️ Coloque a imagem de eventos ou banner aqui</div>', unsafe_allow_html=True)
     
+    # Puxando dados da planilha categorizados como 'cursos' ou 'pesquisa'
     dados_pesq = df_site[df_site['Secao'].isin(['cursos', 'pesquisa'])] if not df_site.empty else pd.DataFrame()
     
     if not dados_pesq.empty:
@@ -152,7 +156,7 @@ with tab4:
             cert = base_certificados[codigo_input]
             st.success("✅ **Certificado Válido e Autêntico!**")
             st.write(f"- **Curso/Evento:** {cert['curso']}")
-            st.write(f"- **Instituição:** PUC Goiás[cite: 1, 2]")
+            st.write(f"- **Instituição:** PUC Goiás")
         elif codigo_input == "":
             st.warning("⚠️ Insira um código no campo acima.")
         else:
@@ -180,6 +184,6 @@ with tab5:
 # Rodapé padrão
 st.markdown("---")
 st.markdown(
-    "<p style='text-align: center; color: gray;'>© 2026 Prof. Dr(a). Larissa Mariana Veloso de Oliveira • Fisioterapia PUC Goiás[cite: 1, 2] • Todos os direitos reservados.</p>", 
+    "<p style='text-align: center; color: gray;'>© 2026 Prof. Dr(a). Larissa Mariana Veloso de Oliveira • Fisioterapia PUC Goiás • Todos os direitos reservados.</p>", 
     unsafe_allow_html=True
 )
