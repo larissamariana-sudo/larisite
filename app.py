@@ -99,7 +99,7 @@ with tab2:
     st.write("Agende avaliações especializadas, mentorias clínicas ou consultorias na área de Fisioterapia.")
     
     try:
-        st.image("imagens/terapiamanual.jpg", use_container_width=True)
+        st.image("imagens/terapiamanual.jpg", width=400)
     except:
         st.markdown('<div class="placeholder-img">🖼️ Imagem "imagens/terapiamanual.jpg" não encontrada na pasta "imagens".</div>', unsafe_allow_html=True)
     
