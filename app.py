@@ -8,20 +8,56 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilização visual para os espaços de imagem e layout
+# Estilização visual avançada para um aspecto mais profissional
 st.markdown("""
     <style>
+    /* Fundo geral da página e tipografia */
+    .stApp {
+        background-color: #f8f9fa;
+    }
+    
+    /* Estilo para caixas e containers */
+    div[data-testid="stVerticalBlock"] > div[style*="border: 1px solid"] {
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        border: 1px solid #e2e8f0 !important;
+    }
+
     .placeholder-img { 
-        background-color: #f0f2f6; 
-        color: #555; 
+        background-color: #e9ecef; 
+        color: #495057; 
         padding: 40px; 
         text-align: center; 
-        border: 2px dashed #b0c4de; 
+        border: 2px dashed #ced4da; 
         border-radius: 8px;
         margin-bottom: 15px; 
         font-weight: 500;
     }
-    .main-header { font-size: 2.5rem; color: #004a80; }
+    
+    .main-header { 
+        font-size: 2.5rem; 
+        color: #004a80; 
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    /* Estilização das abas para maior sofisticação */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        background-color: #ffffff;
+        border-radius: 6px 6px 0px 0px;
+        padding: 10px 20px;
+        font-weight: 600;
+        color: #004a80;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #004a80 !important;
+        color: #ffffff !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -49,7 +85,7 @@ with col_centro:
         st.markdown('<div class="placeholder-img">🖼️ Imagem "imagens/capasite.png" não encontrada na pasta "imagens".</div>', unsafe_allow_html=True)
 
 st.markdown('<h1 class="main-header" style="text-align: center;">Prof. Dr(a). Larissa Mariana Veloso de Oliveira</h1>', unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size: 1.2rem; font-weight: bold; color: #555;'>Fisioterapeuta | Coordenadora do Curso de Fisioterapia — PUC Goiás</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1.2rem; font-weight: bold; color: #495057;'>Fisioterapeuta | Coordenadora do Curso de Fisioterapia — PUC Goiás</p>", unsafe_allow_html=True)
 st.markdown("---")
 
 # Abas de Navegação
@@ -68,7 +104,6 @@ with tab1:
     col1, col2 = st.columns([1, 2])
     with col1:
         try:
-            # Atualizado para buscar dentro da pasta imagens
             st.image("imagens/larissa.PNG", width=250)
         except:
             st.markdown('<div class="placeholder-img">📷 Foto "larissa.PNG" não encontrada na pasta imagens.</div>', unsafe_allow_html=True)
