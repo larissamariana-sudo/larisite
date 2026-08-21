@@ -43,7 +43,7 @@ st.markdown("""
         letter-spacing: -0.5px;
     }
 
-    /* Estilização das abas para maior sofisticação */
+    /* Estilização das abas principais */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
     }
@@ -70,7 +70,7 @@ def carregar_dados_planilha():
         df.columns = df.columns.str.strip().str.title()
         return df
     except Exception as e:
-        return pd.DataFrame(columns=["Secao", "Titulo", "Descricao", "Link", "Isbn/Doi"])
+        return pd.DataFrame(columns=["Secao", "Titulo", "Descricao", "Link", "Isbn/Doi", "Imagem"])
 
 df_site = carregar_dados_planilha()
 
@@ -88,12 +88,12 @@ st.markdown('<h1 class="main-header" style="text-align: center;">Prof. Dr(a). La
 st.markdown("<p style='text-align: center; font-size: 1.2rem; font-weight: bold; color: #495057;'>Fisioterapeuta | Coordenadora do Curso de Fisioterapia — PUC Goiás</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# Abas de Navegação
+# Abas de Navegação Principais (Aba 4 agora engloba Cursos/Palestras e Certificados)
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📂 Sobre & Lattes", 
     "💼 Serviços", 
-    "🎓 Cursos & Pesquisas", 
-    "🔍 Validar Certificado", 
+    "🎓 Pesquisas & Projetos", 
+    "🎓 Cursos, Palestras & Certificados", 
     "📚 E-books & Publicações"
 ])
 
@@ -153,14 +153,14 @@ with tab2:
                 st.warning("Por favor, preencha pelo menos o seu nome e e-mail.")
 
 # ==========================================
-# ABA 3: CURSOS E PESQUISAS (PET-Saúde)
+# ABA 3: PESQUISAS E PROJETOS
 # ==========================================
 with tab3:
-    st.header("Projetos, Cursos e Extensão")
-    st.write("Acompanhe as iniciativas acadêmicas, tutorias do PET-Saúde e capacitações.")
+    st.header("Projetos de Pesquisa e Extensão")
+    st.write("Acompanhe as iniciativas acadêmicas e tutorias do PET-Saúde.")
     
     if not df_site.empty and "Secao" in df_site.columns:
-        dados_pesq = df_site[df_site['Secao'].str.lower().isin(['cursos', 'pesquisa'])]
+        dados_pesq = df_site[df_site['Secao'].str.lower().isin(['pesquisa'])]
     else:
         dados_pesq = pd.DataFrame()
     
@@ -173,30 +173,68 @@ with tab3:
                 if pd.notna(link_val) and str(link_val).strip() != "":
                     st.link_button("Acessar Detalhes", str(link_val))
     else:
-        st.info("Cadastre seus cursos e projetos na planilha do Google Sheets para exibi-los aqui.")
+        st.info("Cadastre seus projetos de pesquisa na planilha do Google Sheets para exibi-los aqui.")
 
 # ==========================================
-# ABA 4: VERIFICAÇÃO DE CERTIFICADOS
+# ABA 4: CURSOS, PALESTRAS & CERTIFICADOS (Com Sub-abas)
 # ==========================================
 with tab4:
-    st.header("Verificação de Autenticidade de Certificados")
-    st.write("Digite o código alfanumérico impresso no seu certificado para comprovar sua validade na PUC Goiás.")
+    # Criando sub-abas para separar inscrições de cursos/palestras e a validação de certificados
+    sub_tab1, sub_tab2 = st.tabs(["📝 Inscrições em Cursos & Palestras", "🔍 Validação de Certificados"])
     
-    codigo_input = st.text_input("Código do Certificado (Ex: LAR-FISIO-2026-001)").strip()
-    
-    if st.button("Verificar Autenticidade"):
-        base_certificados = {
-            "LAR-FISIO-001": {"valido": True, "curso": "Atualidades em Fisioterapia", "data": "2026", "carga": "20h"}
-        }
-        if codigo_input in base_certificados:
-            cert = base_certificados[codigo_input]
-            st.success("✅ **Certificado Válido e Autêntico!**")
-            st.write(f"- **Curso/Evento:** {cert['curso']}")
-            st.write(f"- **Instituição:** PUC Goiás")
-        elif codigo_input == "":
-            st.warning("⚠️ Insira um código no campo acima.")
+    # SUB-ABA 1: Cursos e Palestras Oferecidos
+    with sub_tab1:
+        st.header("Cursos e Palestras Disponíveis")
+        st.write("Confira as capacitações oferecidas e garanta sua inscrição.")
+        
+        if not df_site.empty and "Secao" in df_site.columns:
+            dados_cursos = df_site[df_site['Secao'].str.lower().isin(['cursos', 'palestra', 'palestras'])]
         else:
-            st.error("❌ **Certificado não encontrado.**")
+            dados_cursos = pd.DataFrame()
+            
+        if not dados_cursos.empty:
+            for _, row in dados_cursos.iterrows():
+                with st.container(border=True):
+                    col_img, col_txt = st.columns([1, 2])
+                    with col_img:
+                        # Exibe a imagem do curso cadastrada na planilha (coluna 'Imagem' com o caminho, ex: imagens/curso1.png)
+                        img_path = row.get('Imagem', '')
+                        if pd.notna(img_path) and str(img_path).strip() != "":
+                            try:
+                                st.image(str(img_path), use_container_width=True)
+                            except:
+                                st.markdown('<div class="placeholder-img" style="padding: 20px;">🖼️ Imagem indisponível</div>', unsafe_allow_html=True)
+                        else:
+                            st.markdown('<div class="placeholder-img" style="padding: 20px;">🖼️ Sem imagem cadastrada</div>', unsafe_allow_html=True)
+                    with col_txt:
+                        st.subheader(row.get('Titulo', ''))
+                        st.write(row.get('Descricao', ''))
+                        link_curso = row.get('Link', '')
+                        if pd.notna(link_curso) and str(link_curso).strip() != "":
+                            st.link_button("Inscrever-se no Evento", str(link_curso))
+        else:
+            st.info("Nenhum curso ou palestra cadastrado no momento. Adicione itens na sua planilha do Google Sheets com a seção 'cursos' ou 'palestras'.")
+
+    # SUB-ABA 2: Validação de Certificados (Mantida intacta)
+    with sub_tab2:
+        st.header("Verificação de Autenticidade de Certificados")
+        st.write("Digite o código alfanumérico impresso no seu certificado para comprovar sua validade na PUC Goiás.")
+        
+        codigo_input = st.text_input("Código do Certificado (Ex: LAR-FISIO-2026-001)").strip()
+        
+        if st.button("Verificar Autenticidade"):
+            base_certificados = {
+                "LAR-FISIO-001": {"valido": True, "curso": "Atualidades em Fisioterapia", "data": "2026", "carga": "20h"}
+            }
+            if codigo_input in base_certificados:
+                cert = base_certificados[codigo_input]
+                st.success("✅ **Certificado Válido e Autêntico!**")
+                st.write(f"- **Curso/Evento:** {cert['curso']}")
+                st.write(f"- **Instituição:** PUC Goiás")
+            elif codigo_input == "":
+                st.warning("⚠️ Insira um código no campo acima.")
+            else:
+                st.error("❌ **Certificado não encontrado.**")
 
 # ==========================================
 # ABA 5: E-BOOKS E PUBLICAÇÕES
